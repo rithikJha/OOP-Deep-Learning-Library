@@ -8,7 +8,7 @@ class Set_Optimization_Attribute:
         
         self.input_layer = X
         self.output_layer = Y
-        self.nn_model=nn_model
+        self.nn_model = nn_model
         self.mini_batch_size = mini_batch_size
         self.beta1 = beta1
         self.beta2 = beta2

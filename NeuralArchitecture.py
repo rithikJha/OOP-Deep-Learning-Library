@@ -74,22 +74,24 @@ class Neural_Architecture:
         L=len(self.caches)
         self.grads={}
         m=Y.shape[1]
-        eps=1e-12
+        eps=1e-8
         zeta = self.prediction-Y
         Y=Y.reshape(self.prediction.shape)
         if self.cost_type.lower()=="cel":
             dAL = -np.divide(Y,self.prediction+eps)+np.divide(1-Y,1-self.prediction+eps)
-        if self.cost_type.lower()=="msel" or self.cost_type.lower()=="softmax":
+        elif self.cost_type.lower()=="msel":
+            dAL = zeta
+        elif self.cost_type.lower()=="softmax":
             dAL=-np.divide(Y,self.prediction+eps)
         
         dA=dAL
         for l in reversed(range(L)):
             current_cache = self.caches[l]
             reg_term =bck.regularization_term(self.lambd,self.parameters["W"+str(l+1)],m,self.Reg_type)
-            dA_prev,dW,db = bck.linear_activation_backward(dA,current_cache,self.activation_list[l],zeta)
+            dA_prev,dW_temp,db_temp = bck.linear_activation_backward(dA,current_cache,self.activation_list[l],zeta)
             self.grads["dA"+str(l)]   = dA_prev
-            self.grads["dW"+str(l+1)] = dW + reg_term
-            self.grads["db"+str(l+1)] = db
+            self.grads["dW"+str(l+1)] = dW_temp + reg_term
+            self.grads["db"+str(l+1)] = db_temp
             dA=self.grads["dA"+str(l)]
 
         return self.grads
