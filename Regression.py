@@ -1,6 +1,6 @@
-from NeuralArchitecture import *
-from GradientOptimization import *
-from datasets import *
+from NeuralNetwork.NeuralArchitecture import *
+from NeuralNetwork.GradientOptimization import *
+from NeuralNetwork.datasets import *
 
 np.random.seed(5)   
 X = np.random.randn(1,60000)
